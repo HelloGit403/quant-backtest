@@ -1,0 +1,25 @@
+{
+  "total_return": 3.5613,
+  "annualized_return": 0.2328,
+  "max_drawdown": -0.1921,
+  "sharpe": 1.744,
+  "calmar": 1.212,
+  "win_rate": 0.5308,
+  "start": "2018-01-01",
+  "end": "2024-12-31",
+  "n_days": 1827,
+  "n_trades": 61,
+  "strategy": "ma_cross",
+  "symbol": "000001",
+  "buy_and_hold": {
+    "total_return": 1.7434,
+    "annualized_return": 0.1494,
+    "max_drawdown": -0.4262,
+    "sharpe": 0.889,
+    "calmar": 0.35,
+    "win_rate": 0.5159,
+    "start": "2018-01-01",
+    "end": "2024-12-31",
+    "n_days": 1827
+  }
+}
