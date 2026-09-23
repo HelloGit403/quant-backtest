@@ -46,4 +46,4 @@ Python · pandas · numpy · matplotlib · AkShare · 东财日线接口 · Git/
 ## 联系方式
 
 - GitHub：[@HelloGit403](https://github.com/HelloGit403)  
-- （可在此补充微信 / 邮箱 / 平台链接）
+- siri260601@gmail.com
