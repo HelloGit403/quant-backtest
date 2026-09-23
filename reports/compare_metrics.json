@@ -1,0 +1,91 @@
+{
+  "strategy": "ma_cross",
+  "source": "akshare",
+  "split": 0.7,
+  "results": {
+    "510300": {
+      "in_sample": {
+        "total_return": -0.1056,
+        "annualized_return": -0.0188,
+        "max_drawdown": -0.312,
+        "sharpe": -0.038,
+        "calmar": -0.06,
+        "win_rate": 0.4834,
+        "start": "2018-01-02",
+        "end": "2024-02-07",
+        "n_days": 1484,
+        "buy_and_hold_total": -0.1003,
+        "n_trades": 54
+      },
+      "out_sample": {
+        "total_return": 0.0171,
+        "annualized_return": 0.0068,
+        "max_drawdown": -0.1699,
+        "sharpe": 0.12,
+        "calmar": 0.04,
+        "win_rate": 0.4986,
+        "start": "2024-02-07",
+        "end": "2026-09-23",
+        "n_days": 636,
+        "buy_and_hold_total": 0.4746,
+        "n_trades": 26
+      }
+    },
+    "159915": {
+      "in_sample": {
+        "total_return": 0.4663,
+        "annualized_return": 0.0672,
+        "max_drawdown": -0.3608,
+        "sharpe": 0.435,
+        "calmar": 0.186,
+        "win_rate": 0.4817,
+        "start": "2018-01-02",
+        "end": "2024-02-07",
+        "n_days": 1483,
+        "buy_and_hold_total": -0.003,
+        "n_trades": 54
+      },
+      "out_sample": {
+        "total_return": 0.6623,
+        "annualized_return": 0.2231,
+        "max_drawdown": -0.255,
+        "sharpe": 0.799,
+        "calmar": 0.875,
+        "win_rate": 0.5,
+        "start": "2024-02-07",
+        "end": "2026-09-23",
+        "n_days": 636,
+        "buy_and_hold_total": 1.0596,
+        "n_trades": 22
+      }
+    },
+    "000001": {
+      "in_sample": {
+        "total_return": -0.2717,
+        "annualized_return": -0.0524,
+        "max_drawdown": -0.6405,
+        "sharpe": -0.057,
+        "calmar": -0.082,
+        "win_rate": 0.4446,
+        "start": "2018-01-02",
+        "end": "2024-02-07",
+        "n_days": 1484,
+        "buy_and_hold_total": -0.2738,
+        "n_trades": 49
+      },
+      "out_sample": {
+        "total_return": -0.0689,
+        "annualized_return": -0.0279,
+        "max_drawdown": -0.1938,
+        "sharpe": -0.093,
+        "calmar": -0.144,
+        "win_rate": 0.4421,
+        "start": "2024-02-07",
+        "end": "2026-09-23",
+        "n_days": 636,
+        "buy_and_hold_total": 0.5111,
+        "n_trades": 27
+      }
+    }
+  }
+}
