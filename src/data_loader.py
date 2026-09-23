@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 import pandas as pd
@@ -42,15 +43,48 @@ def _normalize_ohlcv(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def load_akshare(symbol: str, start: str = "20180101", end: str | None = None) -> pd.DataFrame:
+    """
+    拉取 A 股前复权日线。
+    优先自实现东财客户端（直连、更稳）；失败再回落 akshare。
+    """
+    try:
+        from .em_client import fetch_em_daily
+
+        return fetch_em_daily(symbol=symbol, start=start, end=end)
+    except Exception as primary_exc:  # noqa: BLE001
+        print(f"[data] em_client 失败，尝试 akshare: {primary_exc}")
+
     import akshare as ak
 
-    df = ak.stock_zh_a_hist(
-        symbol=symbol,
-        period="daily",
-        start_date=start,
-        end_date=end or pd.Timestamp.today().strftime("%Y%m%d"),
-        adjust="qfq",
+    proxy_keys = (
+        "HTTP_PROXY",
+        "HTTPS_PROXY",
+        "ALL_PROXY",
+        "http_proxy",
+        "https_proxy",
+        "all_proxy",
     )
+    saved = {k: os.environ.pop(k) for k in proxy_keys if k in os.environ}
+    old_environ_no_proxy = os.environ.get("NO_PROXY")
+    os.environ["NO_PROXY"] = "*"
+    os.environ["no_proxy"] = "*"
+    try:
+        df = ak.stock_zh_a_hist(
+            symbol=symbol,
+            period="daily",
+            start_date=start,
+            end_date=end or pd.Timestamp.today().strftime("%Y%m%d"),
+            adjust="qfq",
+        )
+    finally:
+        for k, v in saved.items():
+            os.environ[k] = v
+        if old_environ_no_proxy is None:
+            os.environ.pop("NO_PROXY", None)
+            os.environ.pop("no_proxy", None)
+        else:
+            os.environ["NO_PROXY"] = old_environ_no_proxy
+            os.environ["no_proxy"] = old_environ_no_proxy
     return _normalize_ohlcv(df)
 
 
