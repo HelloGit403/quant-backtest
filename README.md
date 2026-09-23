@@ -13,7 +13,9 @@
 - 回测层：向量化回测，支持手续费与滑点；`position.shift(1)` 避免未来函数
 - 策略层：双均线、动量可插拔
 - 报告层：总收益、年化、最大回撤、夏普、卡玛、胜率 + 净值/持仓图
+- **多标的 IS/OOS**：`scripts/compare_symbols.py` 前 70% 调参视角 / 后 30% 只检验
 - CI：GitHub Actions 在 push/PR/每周一自动跑样例回测并上传报告
+- 接单说明：[FREELANCE.md](FREELANCE.md) · 研究笔记：[notes/is_oos_study.md](notes/is_oos_study.md)
 
 ## 快速开始
 
@@ -29,6 +31,9 @@ python scripts/run_backtest.py --source akshare --symbol 000001 --start 20200101
 
 # 动量策略
 python scripts/run_backtest.py --strategy momentum --source sample
+
+# 多标的 + 样本内/外对比
+python scripts/compare_symbols.py --source akshare --symbols "510300,159915,000001" --split 0.7
 ```
 
 输出：
@@ -36,6 +41,7 @@ python scripts/run_backtest.py --strategy momentum --source sample
 - `reports/metrics.json`
 - `reports/equity_curve.png`
 - `reports/price_signal.png`
+- `reports/compare_table.csv` / `compare_equity.png` / `is_oos_scatter.png`
 
 ## 真实数据示例（000001 平安银行，2020-01 → 2026-09）
 
