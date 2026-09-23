@@ -1,53 +1,70 @@
 # Quant Backtest Portfolio
 
-面向兼职量化作品集的**数据 → 回测 → 报告**流水线。
+[![Backtest](https://github.com/HelloGit403/quant-backtest/actions/workflows/backtest.yml/badge.svg)](https://github.com/HelloGit403/quant-backtest/actions/workflows/backtest.yml)
+
+面向兼职量化作品集的**数据 → 回测 → 报告**流水线。  
 用 Python 完成 A 股风格日线策略回测，输出绩效指标与图表，适合放到 GitHub 展示。
 
 > **定位**：这不是「稳赚策略」，而是可复现的研究模板。回测漂亮 ≠ 实盘赚钱。
 
 ## 功能
 
-- 数据层：优先 AkShare 拉真实行情；无网络/无依赖时自动使用内置样例数据
-- 回测层：向量化回测，支持手续费与滑点
-- 策略层：双均线（SMA Cross）、动量（Momentum）可插拔
-- 报告层：总收益、年化、最大回撤、夏普比率、胜率 + 净值曲线图
+- 数据层：东财直连客户端（`em_client`，无需 token）→ AkShare 回落 → 内置样例 CSV
+- 回测层：向量化回测，支持手续费与滑点；`position.shift(1)` 避免未来函数
+- 策略层：双均线、动量可插拔
+- 报告层：总收益、年化、最大回撤、夏普、卡玛、胜率 + 净值/持仓图
+- CI：GitHub Actions 在 push/PR/每周一自动跑样例回测并上传报告
 
 ## 快速开始
 
 ```bash
-# 建议使用 conda
-conda activate base   # 或你的专属环境
-
-# 可选：真实行情需要 akshare
+# 建议 conda；真实行情仅需 pandas/numpy/matplotlib（akshare 可选）
 pip install -r requirements.txt
 
-# 一键回测（默认样例数据 + 双均线）
+# 默认：样例数据 + 双均线（可复现）
 python scripts/run_backtest.py
 
-# 指定策略与数据源
-python scripts/run_backtest.py --strategy momentum --symbol 000001 --source sample
+# 真实 A 股（东财直连，如平安银行）
+python scripts/run_backtest.py --source akshare --symbol 000001 --start 20200101
+
+# 动量策略
+python scripts/run_backtest.py --strategy momentum --source sample
 ```
 
 输出：
 
-- `reports/metrics.json` — 绩效指标
-- `reports/equity_curve.png` — 净值曲线
-- `reports/price_signal.png` — 价格与信号
+- `reports/metrics.json`
+- `reports/equity_curve.png`
+- `reports/price_signal.png`
+
+## 真实数据示例（000001 平安银行，2020-01 → 2026-09）
+
+| 指标 | 双均线 | 买入持有 |
+|------|--------|----------|
+| 总收益 | -47.2% | -16.6% |
+| 最大回撤 | -64.1% | — |
+| 夏普 | -0.33 | — |
+| 交易次数 | 61 | 1 |
+
+> 单一标的 + 单一参数的双均线在该区间**跑输买入持有**——这是常见结果，作品集里如实展示比回报率更重要。样例合成数据上的正收益仅用于验证流水线。
 
 ## 项目结构
 
 ```
 .
-├── README.md
-├── requirements.txt
-├── data/sample/           # 内置样例行情（可复现）
-├── reports/               # 回测输出
-├── scripts/run_backtest.py
+├── .github/workflows/backtest.yml  # CI 自动回测
+├── data/sample/                    # 可复现样例 OHLCV
+├── reports/                        # 回测产物
+├── scripts/
+│   ├── generate_sample_data.py
+│   └── run_backtest.py
 └── src/
-    ├── data_loader.py     # 数据获取（akshare / csv）
-    ├── backtest.py        # 向量化回测引擎
-    ├── metrics.py         # 绩效指标
+    ├── em_client.py                # 东财日线直连（绕过代理/UA）
+    ├── data_loader.py              # em / akshare / sample
+    ├── backtest.py
+    ├── metrics.py
     └── strategies/
+```
         ├── base.py
         ├── ma_cross.py
         └── momentum.py
